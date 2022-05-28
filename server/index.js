@@ -42,7 +42,7 @@ app.get('/values/all', async (req, res) => {
     req.send(values.rows)
 })
 
-app.get('/values/all', async (req, res) => {
+app.get('/values/current', async (req, res) => {
     redisClient.hgetall('vaules', (err, values) => {
         res.send(values)
     })
@@ -55,7 +55,7 @@ app.post('/values', async (req, res) => {
     }
     redisClient.hset('values', index, 'none')
     redisPublisher.publish('insert', index)
-    pgClient.query('INSERT INTO values(number) VALUES (&1), [index]')
+    pgClient.query('INSERT INTO values(number) VALUES (&1)', [index])
 
     res.send({ working: true })
 })
