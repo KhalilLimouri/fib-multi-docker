@@ -4,9 +4,9 @@ services:
 
 before_install:
   - docker build -t khalil/fib-docker -f /client/Dockerfile.dev ./client
-
+#-e CI=true
 script:
-  - docker run -e CI=true khalil/fib-docker npm run test -- --coverage
+  - docker run khalil/fib-docker npm run test -- --coverage
 
 after_success:
 	- docker build -t khalil/fib-client ./client
