@@ -4,22 +4,22 @@ services:
 
 before_install:
   - docker build -t khalil/fib-docker -f /client/Dockerfile.dev ./client
-
+#-e CI=true
 script:
-  - docker run -e CI=true khalil/fib-docker npm test -- --coverage
+  - docker run khalil/fib-docker npm test -- --coverage
 
 after_success:
-	- docker build -t khalil/fib-client ./client
-	- docker build -t khalil/fib-nginx ./nginx 
-	- docker build -t khalil/fib-server ./server 
-	- docker build -t khalil/fib-worker ./worker 
-	# log dokcer cli
-	- echo "$doc_pass" | docker login -u "$doc_id" -- password-stdin
-	# push to doc hub
-	- docker push khalil/fib-client 
-	- docker push khalil/fib-nginx
-	- docker push khalil/fib-server
-	- docker push khalil/fib-worker
+  - docker build -t khalil/fib-client ./client
+  - docker build -t khalil/fib-nginx ./nginx 
+  - docker build -t khalil/fib-server ./server 
+  - docker build -t khalil/fib-worker ./worker 
+# log dokcer cli
+  - echo "$doc_pass" | docker login -u "$doc_id" -- password-stdin
+# push to doc hub
+  - docker push khalil/fib-client 
+  - docker push khalil/fib-nginx
+  - docker push khalil/fib-server
+  - docker push khalil/fib-worker
 
 #deploy:
 #  provider: elasticbeanstalk
